@@ -4,6 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { connection } from "./database/connection.js";
+import { errorMiddleware } from "./middlewares/error.js";
+import userRouter from "./router/userRoutes.js";
 
 const app = express();  // Create an express app object
 config({
@@ -28,6 +30,10 @@ app.use(
     })
 );
 
-connection()
+app.use("/api/v1/user", userRouter);
+
+//database
+connection();
+app.use(errorMiddleware)
 
 export default app;  // Export the app object
